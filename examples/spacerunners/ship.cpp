@@ -16,32 +16,20 @@ void Ship::initializeGL(GLuint program) {
   m_translation = glm::vec2(-0.8f, 0.0f);
   m_velocity = glm::vec2(0);
 
-  std::array<glm::vec2, 24> positions{
+  std::array<glm::vec2, 16> positions{
       // Ship body
-      glm::vec2{-02.5f, +12.5f}, glm::vec2{-15.5f, +02.5f},
+      glm::vec2{-02.5f, +14.5f}, glm::vec2{-10.5f, +02.5f},
       glm::vec2{-15.5f, -12.5f}, glm::vec2{-09.5f, -07.5f},
       glm::vec2{-03.5f, -12.5f}, glm::vec2{+03.5f, -12.5f},
       glm::vec2{+09.5f, -07.5f}, glm::vec2{+15.5f, -12.5f},
-      glm::vec2{+15.5f, +02.5f}, glm::vec2{+02.5f, +12.5f},
+      glm::vec2{+10.5f, +02.5f}, glm::vec2{+02.5f, +14.5f},
 
-      // Cannon left
-      glm::vec2{-12.5f, +10.5f}, glm::vec2{-12.5f, +04.0f},
-      glm::vec2{-09.5f, +04.0f}, glm::vec2{-09.5f, +10.5f},
-
-      // Cannon right
-      glm::vec2{+09.5f, +10.5f}, glm::vec2{+09.5f, +04.0f},
-      glm::vec2{+12.5f, +04.0f}, glm::vec2{+12.5f, +10.5f},
       
-      // Thruster trail (left)
-      glm::vec2{-12.0f, -07.5f}, 
-      glm::vec2{-09.5f, -18.0f}, 
-      glm::vec2{-07.0f, -07.5f},
-
-      // Thruster trail (right)
-      glm::vec2{+07.0f, -07.5f}, 
-      glm::vec2{+09.5f, -18.0f}, 
-      glm::vec2{+12.0f, -07.5f},
-      };
+      // Thruster trail
+      glm::vec2{-3.5f, -10.5f}, 
+      glm::vec2{00.0f, -20.0f}, 
+      glm::vec2{+3.5f, -10.5f},
+    };
 
   // Normalize
   for (auto &position :positions) {
@@ -56,14 +44,8 @@ void Ship::initializeGL(GLuint program) {
                      9, 5, 6,
                      9, 6, 8,
                      8, 6, 7,
-                     // Cannons
-                     10, 11, 12,
-                     10, 12, 13,
-                     14, 15, 16,
-                     14, 16, 17,
                      // Thruster trails
-                     18, 19, 20,
-                     21, 22, 23};
+                     10, 11, 12};
 
   // Generate VBO
   glGenBuffers(1, &m_vbo);
@@ -123,14 +105,14 @@ void Ship::paintGL(const GameData &gameData) {
       // 50% transparent
       glUniform4f(m_colorLoc, 1, 1, 1, 0.5f);
 
-      glDrawElements(GL_TRIANGLES, 14 * 3, GL_UNSIGNED_INT, nullptr);
+      glDrawElements(GL_TRIANGLES, 10 * 3, GL_UNSIGNED_INT, nullptr);
 
       glDisable(GL_BLEND);
     }
   }
 
   glUniform4fv(m_colorLoc, 1, &m_color.r);
-  glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, nullptr);
+  glDrawElements(GL_TRIANGLES, 8 * 3, GL_UNSIGNED_INT, nullptr);
 
   glBindVertexArray(0);
 
@@ -146,16 +128,16 @@ void Ship::terminateGL() {
 
 void Ship::update(const GameData &gameData, float deltaTime) {
   // Virar para a direita ou esquerda
-  if (gameData.m_input[static_cast<size_t>(Input::Up)] && m_translation.y < 0.8f){
+  if (gameData.m_input[static_cast<size_t>(Input::Up)] && m_translation.y < 0.9f){
       m_translation.y += 0.6f * deltaTime;
   }
-  if (gameData.m_input[static_cast<size_t>(Input::Down)] && m_translation.y > -0.8f){
+  if (gameData.m_input[static_cast<size_t>(Input::Down)] && m_translation.y > -0.9f){
 
       m_translation.y -= 0.6f * deltaTime;
   }
   // Velocidade da nave
   if (gameData.m_state == State::Playing) {
-    glm::vec2 forward = glm::rotate(glm::vec2{400.0f, 0.0f}, 0.0f);
+    glm::vec2 forward = glm::rotate(glm::vec2{500.0f, 0.0f}, 0.0f);
     m_velocity = forward * deltaTime;
   }
 }

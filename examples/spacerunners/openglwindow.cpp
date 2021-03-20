@@ -28,7 +28,7 @@ void OpenGLWindow::initializeGL() {
 
   // Load a new font
   ImGuiIO &io{ImGui::GetIO()};
-  auto filename{getAssetsPath() + "Inconsolata-Medium.ttf"};
+  auto filename{getAssetsPath() + "DotGothic16-Regular.ttf"};
   m_font = io.Fonts->AddFontFromFileTTF(filename.c_str(), 60.0f);
   if (m_font == nullptr) {
     throw abcg::Exception{abcg::Exception::Runtime("Cannot load font file")};
@@ -58,16 +58,21 @@ m_starsProgram = createProgramFromFile(getAssetsPath() + "stars.vert",
 
 void OpenGLWindow::restart() {
   m_gameData.m_state = State::Playing;
+  m_gameData.points = 0;
 
   m_starLayers.initializeGL(m_starsProgram, 25);
   m_ship.initializeGL(m_objectsProgram);
-  m_asteroids.initializeGL(m_objectsProgram, 4);
+  m_asteroids.initializeGL(m_objectsProgram, 6);
 }
 
 
 void OpenGLWindow::update() {
   float deltaTime{static_cast<float>(getDeltaTime())};
 
+  //Pontuação baseada no tempo vivo
+  if (m_gameData.m_state == State::Playing) {
+  m_gameData.points +=deltaTime;
+  }
   // Wait 5 seconds before restarting
   if (m_gameData.m_state != State::Playing &&
       m_restartWaitTimer.elapsed() > 5) {
@@ -125,16 +130,15 @@ void OpenGLWindow::paintUI() {
                            ImGuiWindowFlags_NoInputs};
     ImGui::Begin(" ", nullptr, flags);
     ImGui::PushFont(m_font);
-
+    
     if (m_gameData.m_state == State::GameOver) {
-      ImGui::Text("Game Over!");
-    } else if (m_gameData.m_state == State::Win) {
-      ImGui::Text("*You Win!*");
+      ImGui::Text("Points: %.2f", m_gameData.points);
     }
 
     ImGui::PopFont();
     ImGui::End();
   }
+    
 }
 
 
