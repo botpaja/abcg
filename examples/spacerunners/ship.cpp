@@ -144,7 +144,7 @@ void Ship::update(GameData const &gameData, float deltaTime) {
   }
   // Velocidade da nave
   if (gameData.m_state == State::Playing) {
-    glm::vec2 forward = glm::rotate(glm::vec2{50.0f, 0.0f}, 0.0f);
+    glm::vec2 forward = glm::rotate(glm::vec2{500.0f, 0.0f}, 0.0f);
     m_velocity = forward * deltaTime;
   }
 }
