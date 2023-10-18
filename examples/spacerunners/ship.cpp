@@ -14,7 +14,7 @@ void Ship::create(GLuint program) {
   m_scaleLoc = abcg::glGetUniformLocation(m_program, "scale");
   m_translationLoc = abcg::glGetUniformLocation(m_program, "translation");
 
-  // Reset ship attributes
+  // Posição inicial da nave
   m_rotation = -1.57f;
   m_translation = glm::vec2(-0.8f, 0.0f);
   m_velocity = glm::vec2(0);
@@ -28,7 +28,6 @@ void Ship::create(GLuint program) {
       glm::vec2{+09.5f, -07.5f}, glm::vec2{+15.5f, -12.5f},
       glm::vec2{+10.5f, +02.5f}, glm::vec2{+02.5f, +14.5f},
 
-      
       // Thruster trail
       glm::vec2{-3.5f, -10.5f}, 
       glm::vec2{00.0f, -20.0f}, 
