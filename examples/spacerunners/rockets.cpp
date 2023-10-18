@@ -14,14 +14,12 @@ void Rockets::create(GLuint program, int quantity) {
   m_scaleLoc = abcg::glGetUniformLocation(m_program, "scale");
   m_translationLoc = abcg::glGetUniformLocation(m_program, "translation");
 
-  // Create foguetes
+  // Cria foguetes em posiçoes aleatorias na direita da tela
   m_rockets.clear();
   m_rockets.resize(quantity);
 
   for (auto &rocket : m_rockets) {
     rocket = makeRocket();
-
-    // Cria foguetes em posiçoes aleatorias na direita da tela
     
       std::random_device rd;
       std::default_random_engine eng(rd());
@@ -29,7 +27,6 @@ void Rockets::create(GLuint program, int quantity) {
       std::uniform_real_distribution<> numeroAleatorioY(-1.0f, 1.0f);
       rocket.m_translation.x = numeroAleatorioX(eng),
       rocket.m_translation.y = numeroAleatorioY(eng);
-    
   }
 }
 
@@ -43,12 +40,9 @@ void Rockets::paint() {
     abcg::glUniform1f(m_scaleLoc, rocket.m_scale);
     abcg::glUniform1f(m_rotationLoc, rocket.m_rotation);
 
-    
-        abcg::glUniform2f(m_translationLoc, rocket.m_translation.x,
+    abcg::glUniform2f(m_translationLoc, rocket.m_translation.x,
                           rocket.m_translation.y);
-
-        abcg::glDrawElements(GL_TRIANGLES, 10 * 3, GL_UNSIGNED_INT, nullptr);
-      
+    abcg::glDrawElements(GL_TRIANGLES, 10 * 3, GL_UNSIGNED_INT, nullptr);
 
     abcg::glBindVertexArray(0);
   }
@@ -87,7 +81,6 @@ Rockets::Rocket Rockets::makeRocket(glm::vec2 translation,
 
   auto &re{m_randomEngine}; // Shortcut
 
-
   // Get a random color (actually, a grayscale)
   std::uniform_real_distribution randomIntensity(0.5f, 1.0f);
   rocket.m_color = glm::vec4(randomIntensity(re));
@@ -96,11 +89,6 @@ Rockets::Rocket Rockets::makeRocket(glm::vec2 translation,
   rocket.m_rotation = 1.57f;;
   rocket.m_scale = scale;
   rocket.m_translation = translation;
-
-
-  // Get a random direction
-  glm::vec2 const direction{m_randomDist(re), m_randomDist(re)};
-  rocket.m_velocity = glm::normalize(direction) / 7.0f;
 
   // Create geometry data
   std::array positions{
