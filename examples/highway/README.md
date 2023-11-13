@@ -11,10 +11,12 @@ No metodo `loadObj()` foi retirada a opção de normalizar e centralizar o objet
     void Model::loadObj(std::string_view path)
 
 ## Window
-Foram criadas duas instancias da classe Model no window.hpp, uma para as rodas e uma para o carro.
+Foram criadas duas instancias da classe Model no window.hpp, uma para as rodas e uma para o carro. Também foram adicionadas variaveis float para controlar a rotação e velocidade de rotação das rodas.
 
     Model m_wheel;
     Model m_car;
+    float m_angle;
+    float m_velocity;
 
 No metodo `onCreate()` foi adicionada a chamada do metodos metodos que carregam os arquivos dos objetos 3d e também são inicializados seus respectivos VAOs/VBOs
 
