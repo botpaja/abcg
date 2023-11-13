@@ -74,7 +74,7 @@ void Window::onCreate() {
   m_colorLocation = abcg::glGetUniformLocation(m_program, "color");
 
   // Load wheels
-  m_wheel.loadObj(assetsPath + "bunny.obj");
+  m_wheel.loadObj(assetsPath + "wheel.obj");
   m_wheel.setupVAO(m_program);
 
   // Load car
