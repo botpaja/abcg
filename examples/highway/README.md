@@ -6,10 +6,17 @@ O projeto Highway consiste em uma aplicação que mostra o modelo 3D de um carro
 O projeto foi uma adaptação do projeto lookat e viewer. Foram modificadas as classes Window, Ground, Model.
 
 ## Model
-No metodo loadObj foi retirada a opção de normalizar e centralizar o objeto, além de também ser retirado o metodo que faz essa função.
+No metodo `loadObj()` foi retirada a opção de normalizar e centralizar o objeto, além de também ser retirado o metodo que faz essa função.
+
+    void Model::loadObj(std::string_view path)
 
 ## Window
-No metodo onCreate() foi adicionada a chamada do metodos metodos que carregam os arquivos dos objetos 3d e também são inicializados seus respectivos VAOs/VBOs
+Foram criadas duas instancias da classe Model no window.hpp, uma para as rodas e uma para o carro.
+
+    Model m_wheel;
+    Model m_car;
+
+No metodo `onCreate()` foi adicionada a chamada do metodos metodos que carregam os arquivos dos objetos 3d e também são inicializados seus respectivos VAOs/VBOs
 
     // Load wheels
     m_wheel.loadObj(assetsPath + "wheel.obj");
@@ -19,7 +26,7 @@ No metodo onCreate() foi adicionada a chamada do metodos metodos que carregam os
     m_car.loadObj(assetsPath + "car.obj");
     m_car.setupVAO(m_program);
 
-  No metodo onPaint() foi adicionada a variavel m_angle, que será usada para definir a rotação das 4 rodas.
+  No metodo `onPaint()` foi adicionada a variavel m_angle, que será usada para definir a rotação das 4 rodas.
   
     auto const deltaTime{gsl::narrow_cast<float>(getDeltaTime())};
     m_angle = glm::wrapAngle(m_angle + glm::radians(m_velocity * deltaTime));
@@ -78,7 +85,7 @@ No metodo onCreate() foi adicionada a chamada do metodos metodos que carregam os
     abcg::glUniform4f(m_colorLocation, 1.0f, 0.25f, 0.25f, 1.0f);
     m_car.render();
   
-  No metodo onPaintUI() é definido o slider que controlará a velocidade de rotação das rodas.
+  No metodo `onPaintUI()` é definido o slider que controlará a velocidade de rotação das rodas.
   
     ImGui::SetNextWindowPos(ImVec2(5, m_viewportSize.y - 94));
     ImGui::SetNextWindowSize(ImVec2(m_viewportSize.x - 10, -1));
@@ -100,7 +107,7 @@ No metodo onCreate() foi adicionada a chamada do metodos metodos que carregam os
 
 ## Ground
 
-Foi feita uma mudança simples no metodo paint() para renderizar o chão com as cores de uma estrada.
+Foi feita uma mudança simples no metodo `paint()` para renderizar o chão com as cores de uma estrada.
 
     void Ground::paint() {
       abcg::glBindVertexArray(m_VAO);
@@ -128,5 +135,6 @@ Foi feita uma mudança simples no metodo paint() para renderizar o chão com as 
 O metodo cria um grid de 11x11, onde cada espaço é transladado através de uma matriz de modelo e então desenhado com glDrawArrays usando a primitiva GL_TRIANGLE_STRIP.
 Após isso, é criado um operador ternario, que muda a cor de acordo com a coordenada Z, de modo que o grid se assemelhe a uma estrada.
   
-
+Projeto disponivel em:
+[Highway](https://botpaja.github.io/abcg/highway/)
   
