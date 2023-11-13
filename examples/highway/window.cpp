@@ -73,10 +73,11 @@ void Window::onCreate() {
   m_modelMatrixLocation = abcg::glGetUniformLocation(m_program, "modelMatrix");
   m_colorLocation = abcg::glGetUniformLocation(m_program, "color");
 
-  // Load model
+  // Load wheels
   m_wheel.loadObj(assetsPath + "bunny.obj");
   m_wheel.setupVAO(m_program);
 
+  // Load car
   m_car.loadObj(assetsPath + "car.obj");
   m_car.setupVAO(m_program);
 }
@@ -101,7 +102,7 @@ void Window::onPaint() {
   auto const deltaTime{gsl::narrow_cast<float>(getDeltaTime())};
   m_angle = glm::wrapAngle(m_angle + glm::radians(m_velocity * deltaTime));
 
-  // Draw white bunny
+  // Draw 4 wheels
   glm::mat4 model{1.0f};
   model = glm::translate(model, glm::vec3(-0.3f, 0.1f, 0.25f));
   model = glm::rotate(model, m_angle, glm::vec3(0, 0, -1));
@@ -111,7 +112,6 @@ void Window::onPaint() {
   abcg::glUniform4f(m_colorLocation, 0.5f, 0.5f, 0.5f, 1.5f);
   m_wheel.render();
 
-  // Draw yellow bunny
   model = glm::mat4(1.0);
   model = glm::translate(model, glm::vec3(0.3f, 0.1f, 0.25f));
   model = glm::rotate(model, m_angle, glm::vec3(0, 0, -1));
@@ -121,7 +121,6 @@ void Window::onPaint() {
   abcg::glUniform4f(m_colorLocation, 0.5f, 0.5f, 0.5f, 1.5f);
   m_wheel.render();
 
-  // Draw blue bunny
   model = glm::mat4(1.0);
   model = glm::translate(model, glm::vec3(-0.3f, 0.1f, -0.25f));
   model = glm::rotate(model, m_angle, glm::vec3(0, 0, -1));
@@ -131,7 +130,6 @@ void Window::onPaint() {
   abcg::glUniform4f(m_colorLocation, 0.5f, 0.5f, 0.5f, 1.5f);
   m_wheel.render();
 
-  // Draw blue bunny
   model = glm::mat4(1.0);
   model = glm::translate(model, glm::vec3(0.3f, 0.1f, -0.25f));
   model = glm::rotate(model, m_angle, glm::vec3(0, 0, -1));
@@ -163,7 +161,7 @@ void Window::onPaintUI() {
     ImGui::SetNextWindowSize(ImVec2(m_viewportSize.x - 10, -1));
     ImGui::Begin("Slider window", nullptr, ImGuiWindowFlags_NoDecoration);
 
-    // Create a slider to control the number of rendered triangles
+    // Create a slider to control the velocity of the wheels
     {
       // Slider will fill the space of the window
       ImGui::PushItemWidth(m_viewportSize.x - 25);
@@ -177,9 +175,7 @@ void Window::onPaintUI() {
 
     ImGui::End();
   }
-
-  
-  }
+}
 
 void Window::onResize(glm::ivec2 const &size) {
   m_viewportSize = size;
