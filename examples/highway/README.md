@@ -97,6 +97,36 @@ No metodo onPaintUI() é definido o slider que controlará a velocidade de rota�
   }
 
   ImGui::End();
+
+Ground
+
+Foi feita uma mudança simples no metodo paint() para renderizar o chão com as cores de uma estrada.
+
+void Ground::paint() {
+  abcg::glBindVertexArray(m_VAO);
+
+  // Draw a grid of 2N+1 x 2N+1 tiles on the xz plane, centered around the
+  // origin
+  auto const N{5};
+  for (auto const z : iter::range(-N, N + 1)) {
+    for (auto const x : iter::range(-N, N + 1)) {
+      // Set model matrix as a translation matrix
+      glm::mat4 model{1.0f};
+      model = glm::translate(model, glm::vec3(x, 0.0f, z));
+      abcg::glUniformMatrix4fv(m_modelMatrixLoc, 1, GL_FALSE, &model[0][0]);
+
+      // Set color (checkerboard pattern)
+      auto const gray{z < -1 || z > 1 ? 1.0f : 0.2f};
+      abcg::glUniform4f(m_colorLoc, gray, gray, gray, 1.0f);
+
+      abcg::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    }
+  }
+  abcg::glBindVertexArray(0);
+}
+
+O metodo cria um grid de 11x11, onde cada espaço é transladado através de uma matriz de modelo e então desenhado com glDrawArrays usando a primitiva GL_TRIANGLE_STRIP.
+Após isso, é criado um operador ternario, que muda a cor de acordo com a coordenada Z, de modo que o grid se assemelhe a uma estrada.
   
 
   
