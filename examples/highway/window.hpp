@@ -5,7 +5,7 @@
 
 #include "camera.hpp"
 #include "ground.hpp"
-#include "wheel.hpp"
+#include "model.hpp"
 
 class Window : public abcg::OpenGLWindow {
 protected:
@@ -40,8 +40,8 @@ private:
 
   Ground m_ground;
 
-  Wheel m_wheel;
-  Wheel m_car;
+  Model m_wheel;
+  Model m_car;
 
 };
 

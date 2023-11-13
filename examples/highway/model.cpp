@@ -1,4 +1,4 @@
-#include "wheel.hpp"
+#include "model.hpp"
 
 #include <unordered_map>
 
@@ -10,7 +10,7 @@ template <> struct std::hash<Vertex> {
   }
 };
 
-void Wheel::createBuffers() {
+void Model::createBuffers() {
   // Delete previous buffers
   abcg::glDeleteBuffers(1, &m_EBO);
   abcg::glDeleteBuffers(1, &m_VBO);
@@ -32,7 +32,7 @@ void Wheel::createBuffers() {
   abcg::glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void Wheel::loadObj(std::string_view path) {
+void Model::loadObj(std::string_view path) {
   tinyobj::ObjReader reader;
 
   if (!reader.ParseFromFile(path.data())) {
@@ -86,7 +86,7 @@ void Wheel::loadObj(std::string_view path) {
   createBuffers();
 }
 
-void Wheel::render() const {
+void Model::render() const {
   abcg::glBindVertexArray(m_VAO);
 
   abcg::glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, nullptr);
@@ -94,7 +94,7 @@ void Wheel::render() const {
   abcg::glBindVertexArray(0);
 }
 
-void Wheel::setupVAO(GLuint program) {
+void Model::setupVAO(GLuint program) {
   // Release previous VAO
   abcg::glDeleteVertexArrays(1, &m_VAO);
 
@@ -120,7 +120,7 @@ void Wheel::setupVAO(GLuint program) {
   abcg::glBindVertexArray(0);
 }
 
-void Wheel::destroy() const {
+void Model::destroy() const {
   abcg::glDeleteBuffers(1, &m_EBO);
   abcg::glDeleteBuffers(1, &m_VBO);
   abcg::glDeleteVertexArrays(1, &m_VAO);

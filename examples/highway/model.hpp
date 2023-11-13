@@ -1,5 +1,5 @@
-#ifndef WHEEL_HPP_
-#define WHEEL_HPP_
+#ifndef MODEL_HPP_
+#define MODEL_HPP_
 
 #include "abcgOpenGL.hpp"
 
@@ -9,7 +9,7 @@ struct Vertex {
   friend bool operator==(Vertex const &, Vertex const &) = default;
 };
 
-class Wheel {
+class Model {
 public:
   void loadObj(std::string_view path);
   void render() const;
